@@ -50,14 +50,28 @@ app.get('/users', (request, response) => {
 })
 
 app.post('/users', (request, response) => {
+try{
+    
+    
     const {name, age} = request.body
+    if(age < 18) throw new Error("Only allowed users over as 18 years old");
+    
+    
     console.log(uuid.v4())
     
     const user = {id:uuid.v4(), name, age}
     
     users.push(user)
     
+    
+    
     return response.status(201).json(user)
+
+} catch(err){
+    return response.status(400).json({error:err.message})
+} finally {
+    console.log("Execução completada com sucesso")
+}
 
 })
 
